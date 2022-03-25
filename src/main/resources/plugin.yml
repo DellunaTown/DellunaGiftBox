@@ -1,0 +1,4 @@
+name: DellunaGiftBox
+version: ${project.version}
+main: me.lewin.dellunagiftbox.Main
+api-version: 1.18
