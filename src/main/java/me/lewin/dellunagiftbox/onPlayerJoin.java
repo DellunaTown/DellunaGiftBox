@@ -1,10 +1,17 @@
 package me.lewin.dellunagiftbox;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 public class onPlayerJoin implements Listener {
     @EventHandler
@@ -12,16 +19,16 @@ public class onPlayerJoin implements Listener {
         Player player = event.getPlayer();
 
         if (!(PlayerData.getPlayerFile(player.getUniqueId().toString()).canRead())){
-            PlayerData.creatDataFile(player);
+            PlayerData.creatDataFile((OfflinePlayer) player);
         }
 
-        setReloadPlayerName(player, player.getUniqueId().toString());
-    }
+        Plugin plugin = JavaPlugin.getPlugin(Main.class);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            FileConfiguration config = PlayerData.getPlayerConfig(player.getUniqueId().toString());
+            if (((ArrayList<ItemStack>)config.get("item")).size() > 0){
+                player.sendMessage("§7[§a ! §7] §a서버로부터 도착한 선물이 있습니다. /gift 혹은 /선물함 으로 확인해보세요!");
+            }
+        }, 60L);
 
-    private void setReloadPlayerName(Player player, String uuid)
-    {
-        FileConfiguration config = PlayerData.getPlayerConfig(uuid);
-        config.set("name", player.getName());
-        PlayerData.saveDataFile(config, PlayerData.getPlayerFile(uuid));
     }
 }

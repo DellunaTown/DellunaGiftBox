@@ -10,11 +10,10 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         Plugin plugin = JavaPlugin.getPlugin(Main.class);
 
-        this.getCommand("bp").setExecutor(new Commands());
+        this.getCommand("gift").setExecutor(new Commands());
 
-        Bukkit.getPluginManager().registerEvents(new onPlayerUse(), this);
         Bukkit.getPluginManager().registerEvents(new onPlayerJoin(), this);
-        Bukkit.getPluginManager().registerEvents(new onInventoryClose(), this);
+        Bukkit.getPluginManager().registerEvents(new onInventoryClick(), this);
 
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdir();
