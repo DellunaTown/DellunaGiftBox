@@ -8,8 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
@@ -38,7 +36,11 @@ public class Commands implements CommandExecutor {
                         list.add(item);
                         config.set("item", list);
                         PlayerData.saveDataFile(config, PlayerData.getPlayerFile(Bukkit.getOfflinePlayer(name).getUniqueId().toString()));
-                        player.sendMessage(name + "님께 선물 지금 완료");
+                        player.sendMessage(name + "님께 선물 지급 완료");
+
+                        if (Bukkit.getOfflinePlayer(name).isOnline()) {
+                            ((Player) Bukkit.getOfflinePlayer(name)).sendMessage("§7[§a ! §7] §a서버로부터 선물이 도착했습니다. /gift 혹은 /선물함 으로 확인해보세요!");
+                        }
                     }
                     break;
                 case "open":

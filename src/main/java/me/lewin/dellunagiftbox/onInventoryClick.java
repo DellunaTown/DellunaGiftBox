@@ -17,7 +17,7 @@ public class onInventoryClick implements Listener {
 
         if (event.getView().getTitle().contains("§x§0§0§b§3§b§6의 선물함")) {
             if (event.getClickedInventory() == null) return;
-            if (event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
+            if (event.getClickedInventory() == event.getView().getBottomInventory()) return;
             if (event.getCurrentItem() == null) return;
             event.setCancelled(true);
 
@@ -26,7 +26,9 @@ public class onInventoryClick implements Listener {
 
             FileConfiguration config = PlayerData.getPlayerConfig(Bukkit.getOfflinePlayer(name).getUniqueId().toString());
             ArrayList<ItemStack> list = (ArrayList<ItemStack>) config.get("item");
-            list.remove(event.getSlot());
+            if (list.size() > event.getSlot()) {
+                list.remove(event.getSlot());
+            }
             config.set("item", list);
             PlayerData.saveDataFile(config, PlayerData.getPlayerFile(Bukkit.getOfflinePlayer(name).getUniqueId().toString()));
             player.openInventory(InventoryGUI.getInventory(Bukkit.getOfflinePlayer(name)));
